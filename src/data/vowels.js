@@ -1,0 +1,26 @@
+export const vowelsData = {
+  essential: [
+    { thai: '-ะ', sound: 'a', length: 'Short', example: 'จะ', exampleMeaning: 'will' },
+    { thai: '-า', sound: 'aa', length: 'Long', example: 'มา', exampleMeaning: 'come' },
+    { thai: '-ิ', sound: 'i', length: 'Short', example: 'นิด', exampleMeaning: 'little' },
+    { thai: '-ี', sound: 'ii', length: 'Long', example: 'มี', exampleMeaning: 'have' },
+    { thai: '-ุ', sound: 'u', length: 'Short', example: 'รุก', exampleMeaning: 'invade' },
+    { thai: '-ู', sound: 'uu', length: 'Long', example: 'รู้', exampleMeaning: 'know' },
+    { thai: 'เ-', sound: 'ee', length: 'Long', example: 'เก', exampleMeaning: 'old' },
+    { thai: 'แ-', sound: 'ae', length: 'Long', example: 'แม่', exampleMeaning: 'mother' },
+    { thai: 'โ-', sound: 'oo', length: 'Long', example: 'โต', exampleMeaning: 'big' },
+    { thai: 'ไ-', sound: 'ai', length: 'Long', example: 'ไป', exampleMeaning: 'go' },
+    { thai: 'ใ-', sound: 'ai', length: 'Long', example: 'ใจ', exampleMeaning: 'heart' },
+    { thai: '-อ', sound: 'or', length: 'Long', example: 'พอ', exampleMeaning: 'enough' },
+  ],
+  secondary: [
+    { thai: 'เ-ะ', sound: 'e', length: 'Short', example: 'เละ', exampleMeaning: 'messy' },
+    { thai: 'แ-ะ', sound: 'ae', length: 'Short', example: 'แพะ', exampleMeaning: 'goat' },
+    { thai: 'โ-ะ', sound: 'o', length: 'Short', example: 'โละ', exampleMeaning: 'discard' },
+    { thai: '-ั', sound: 'a', length: 'Short', example: 'รัก', exampleMeaning: 'love' },
+    { thai: 'เ-า', sound: 'ao', length: 'Long', example: 'เรา', exampleMeaning: 'we' },
+    { thai: 'เ-ีย', sound: 'ia', length: 'Long', example: 'เสีย', exampleMeaning: 'broken' },
+    { thai: 'เ-ือ', sound: 'uea', length: 'Long', example: 'เรือ', exampleMeaning: 'boat' },
+    { thai: '-ัว', sound: 'ua', length: 'Long', example: 'ตัว', exampleMeaning: 'body' },
+  ],
+}

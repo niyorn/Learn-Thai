@@ -1,0 +1,45 @@
+<script setup>
+defineProps({
+  flipped: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+defineEmits(['click'])
+</script>
+
+<template>
+  <div
+    class="w-full max-w-[440px] h-80 cursor-pointer mx-auto"
+    style="perspective: 1200px"
+    @click="$emit('click')"
+  >
+    <div
+      :class="['card-flip relative w-full h-full', { flipped }]"
+    >
+      <!-- Front -->
+      <div
+        class="card-face paper-texture lotus-corners absolute w-full h-full bg-paper border border-gold-light rounded flex flex-col items-center justify-center p-10 shadow-soft"
+      >
+        <slot name="front" />
+      </div>
+
+      <!-- Back -->
+      <div
+        class="card-face card-back absolute w-full h-full bg-gradient-to-br from-azure to-[#1E3A8A] rounded flex flex-col items-center justify-center p-10 shadow-lifted text-paper"
+      >
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-azure-bright via-[#60A5FA] to-azure-bright" />
+        <slot name="back" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+@media (max-width: 640px) {
+  .h-80 {
+    height: 280px;
+  }
+}
+</style>
