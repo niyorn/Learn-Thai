@@ -61,7 +61,7 @@ import { RouterLink } from 'vue-router'
           20 vowel sounds
         </p>
         <div class="font-thai text-4xl text-coral">
-          -า -ี -ู
+          กา กี กู
         </div>
       </RouterLink>
 
