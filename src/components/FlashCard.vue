@@ -19,9 +19,6 @@ const emit = defineEmits(['click', 'swipe-left', 'swipe-right', 'answer-correct'
 const cardRef = ref(null)
 
 const swipeEnabled = computed(() => {
-  if (props.mode === 'answer') {
-    return props.flipped
-  }
   return true
 })
 

@@ -321,13 +321,10 @@ const getSoundText = (card) => {
         </template>
       </FlashCard>
 
-      <!-- Answer buttons -->
-      <div
-        v-if="practiceFlipped"
-        class="mt-8"
-      >
+      <!-- Answer buttons - always visible -->
+      <div class="mt-8">
         <p class="font-display text-center text-ink-muted text-xs mb-4">
-          Swipe left if you didn't know, swipe right if you got it
+          Swipe or tap to answer
         </p>
         <div class="flex gap-3 justify-center flex-wrap">
           <button
@@ -344,13 +341,6 @@ const getSoundText = (card) => {
           </button>
         </div>
       </div>
-
-      <p
-        v-else
-        class="font-display text-center mt-8 text-ink-muted text-sm"
-      >
-        Flip the card to reveal the answer
-      </p>
     </template>
   </div>
 </template>
