@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useEventListener } from '@vueuse/core'
 import { vowelsData } from '@/data/vowels'
 import FlashCard from '@/components/FlashCard.vue'
@@ -60,6 +61,22 @@ useEventListener('keydown', (event) => {
 
 <template>
   <div class="px-4 py-8 max-w-xl mx-auto">
+    <RouterLink
+      to="/"
+      class="inline-flex items-center gap-2 text-ink-muted hover:text-azure transition-colors mb-6"
+    >
+      <svg
+        class="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      <span class="font-display text-sm">Back to Home</span>
+    </RouterLink>
+
     <div class="thai-border text-center mb-8 pt-6">
       <h2 class="font-display text-3xl font-semibold text-ink mb-2">
         Vowels

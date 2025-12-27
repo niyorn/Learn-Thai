@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { RouterLink } from 'vue-router'
 import { consonantsData } from '@/data/consonants'
 import { vowelsData } from '@/data/vowels'
 import { wordsData } from '@/data/words'
@@ -93,6 +94,22 @@ const getSoundText = (card) => {
 
 <template>
   <div class="px-4 py-8 max-w-xl mx-auto">
+    <RouterLink
+      to="/"
+      class="inline-flex items-center gap-2 text-ink-muted hover:text-azure transition-colors mb-6"
+    >
+      <svg
+        class="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      <span class="font-display text-sm">Back to Home</span>
+    </RouterLink>
+
     <!-- Category Selection -->
     <template v-if="!isStarted">
       <div class="thai-border text-center mb-8 pt-6">
