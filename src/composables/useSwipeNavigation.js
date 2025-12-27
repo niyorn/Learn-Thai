@@ -12,6 +12,7 @@ import { useSwipe } from '@vueuse/core'
 export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshold = 80 }) {
   const isSwiping = ref(false)
   const isAnimatingOut = ref(false)
+  const isEntering = ref(false)
   const swipeDirection = ref(null)
   const offsetX = ref(0)
 
@@ -19,6 +20,15 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
   const opacity = computed(() => Math.max(0.5, 1 - Math.abs(offsetX.value) / 300))
 
   const cardStyle = computed(() => {
+    // Card entering from right
+    if (isEntering.value) {
+      return {
+        transform: 'translateX(300px) rotate(0deg)',
+        opacity: 0,
+        transition: 'none',
+      }
+    }
+    // Card exiting
     if (isAnimatingOut.value) {
       const exitX = swipeDirection.value === 'left' ? -400 : 400
       return {
@@ -27,13 +37,15 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
         transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
       }
     }
+    // Card at rest
     if (!isSwiping.value) {
       return {
         transform: 'translateX(0) rotate(0deg)',
         opacity: 1,
-        transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
+        transition: 'transform 0.25s ease-out, opacity 0.25s ease-out',
       }
     }
+    // Card being dragged
     return {
       transform: `translateX(${offsetX.value}px) rotate(${rotation.value}deg)`,
       opacity: opacity.value,
@@ -55,13 +67,24 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
         swipeDirection.value = direction.value
 
         setTimeout(() => {
+          // Set entering state before callback (card will be off-screen right)
+          isEntering.value = true
+
           if (direction.value === 'left') {
             onSwipeLeft?.()
           } else if (direction.value === 'right') {
             onSwipeRight?.()
           }
+
           isAnimatingOut.value = false
           offsetX.value = 0
+
+          // After Vue updates the card content, animate it in
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              isEntering.value = false
+            })
+          })
         }, 300)
       } else {
         offsetX.value = 0
@@ -69,5 +92,5 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
     },
   })
 
-  return { direction, lengthX, cardStyle, isSwiping }
+  return { direction, lengthX, cardStyle, isSwiping, isEntering }
 }
