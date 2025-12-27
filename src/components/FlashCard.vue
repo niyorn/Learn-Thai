@@ -18,13 +18,8 @@ const emit = defineEmits(['click', 'swipe-left', 'swipe-right', 'answer-correct'
 
 const cardRef = ref(null)
 
-const swipeEnabled = computed(() => {
-  return true
-})
-
-const { cardStyle, isSwiping } = useSwipeNavigation(cardRef, {
+const { cardStyle, isSwiping, triggerExit } = useSwipeNavigation(cardRef, {
   onSwipeLeft: () => {
-    if (!swipeEnabled.value) return
     if (props.mode === 'answer') {
       emit('answer-incorrect')
     } else {
@@ -32,7 +27,6 @@ const { cardStyle, isSwiping } = useSwipeNavigation(cardRef, {
     }
   },
   onSwipeRight: () => {
-    if (!swipeEnabled.value) return
     if (props.mode === 'answer') {
       emit('answer-correct')
     } else {
@@ -46,6 +40,13 @@ const handleClick = () => {
     emit('click')
   }
 }
+
+// Expose triggerExit for parent components to use with buttons
+const animateOut = (direction, callback) => {
+  triggerExit(direction, callback)
+}
+
+defineExpose({ animateOut })
 </script>
 
 <template>

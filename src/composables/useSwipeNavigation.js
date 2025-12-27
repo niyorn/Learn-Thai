@@ -20,21 +20,21 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
   const opacity = computed(() => Math.max(0.5, 1 - Math.abs(offsetX.value) / 300))
 
   const cardStyle = computed(() => {
-    // Card entering from right
+    // Card entering from right (with rotation like swipe)
     if (isEntering.value) {
       return {
-        transform: 'translateX(300px) rotate(0deg)',
+        transform: 'translateX(350px) rotate(35deg)',
         opacity: 0,
         transition: 'none',
       }
     }
     // Card exiting
     if (isAnimatingOut.value) {
-      const exitX = swipeDirection.value === 'left' ? -400 : 400
+      const exitX = swipeDirection.value === 'left' ? -350 : 350
       return {
         transform: `translateX(${exitX}px) rotate(${exitX * 0.1}deg)`,
         opacity: 0,
-        transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
+        transition: 'transform 0.2s ease-out, opacity 0.2s ease-out',
       }
     }
     // Card at rest
@@ -42,7 +42,7 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
       return {
         transform: 'translateX(0) rotate(0deg)',
         opacity: 1,
-        transition: 'transform 0.25s ease-out, opacity 0.25s ease-out',
+        transition: 'transform 0.2s ease-out, opacity 0.2s ease-out',
       }
     }
     // Card being dragged
@@ -52,6 +52,25 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
       transition: 'none',
     }
   })
+
+  // Trigger exit animation programmatically (for button clicks)
+  const triggerExit = (direction, callback) => {
+    isAnimatingOut.value = true
+    swipeDirection.value = direction
+
+    setTimeout(() => {
+      isEntering.value = true
+      callback?.()
+      isAnimatingOut.value = false
+      offsetX.value = 0
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          isEntering.value = false
+        })
+      })
+    }, 200)
+  }
 
   const { direction, lengthX } = useSwipe(target, {
     passive: true,
@@ -67,7 +86,6 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
         swipeDirection.value = direction.value
 
         setTimeout(() => {
-          // Set entering state before callback (card will be off-screen right)
           isEntering.value = true
 
           if (direction.value === 'left') {
@@ -79,18 +97,17 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
           isAnimatingOut.value = false
           offsetX.value = 0
 
-          // After Vue updates the card content, animate it in
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
               isEntering.value = false
             })
           })
-        }, 300)
+        }, 200)
       } else {
         offsetX.value = 0
       }
     },
   })
 
-  return { direction, lengthX, cardStyle, isSwiping, isEntering }
+  return { direction, lengthX, cardStyle, isSwiping, isEntering, triggerExit }
 }

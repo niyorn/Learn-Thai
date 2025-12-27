@@ -10,6 +10,7 @@ import ClassBadge from '@/components/ClassBadge.vue'
 import LengthBadge from '@/components/LengthBadge.vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 
+const flashCardRef = ref(null)
 const practiceFilter = ref('all')
 const practiceCards = ref([])
 const practiceIndex = ref(0)
@@ -77,9 +78,7 @@ const handleAnswer = (correct) => {
     seen: [...practiceStats.value.seen, { card: currentCard.value, correct }],
   }
   practiceFlipped.value = false
-  setTimeout(() => {
-    practiceIndex.value++
-  }, 200)
+  practiceIndex.value++
 }
 
 const resetPractice = () => {
@@ -89,6 +88,12 @@ const resetPractice = () => {
 const getSoundText = (card) => {
   if (card.type === 'vowel') return card.example
   return card.thai
+}
+
+// Handle button click with animation
+const handleButtonAnswer = (correct) => {
+  const direction = correct ? 'right' : 'left'
+  flashCardRef.value?.animateOut(direction, () => handleAnswer(correct))
 }
 </script>
 
@@ -255,6 +260,7 @@ const getSoundText = (card) => {
       />
 
       <FlashCard
+        ref="flashCardRef"
         :flipped="practiceFlipped"
         mode="answer"
         @click="practiceFlipped = !practiceFlipped"
@@ -329,13 +335,13 @@ const getSoundText = (card) => {
         <div class="flex gap-3 justify-center flex-wrap">
           <button
             class="px-6 py-3.5 border border-coral rounded bg-coral-light text-coral font-semibold text-sm cursor-pointer flex items-center gap-1.5 hover:bg-coral hover:text-paper transition-colors"
-            @click="handleAnswer(false)"
+            @click="handleButtonAnswer(false)"
           >
             ← Didn't Know
           </button>
           <button
             class="px-6 py-3.5 border-none rounded bg-azure text-paper font-semibold text-sm cursor-pointer flex items-center gap-1.5 hover:bg-azure-bright transition-colors"
-            @click="handleAnswer(true)"
+            @click="handleButtonAnswer(true)"
           >
             Got It →
           </button>
