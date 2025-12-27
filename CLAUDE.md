@@ -2,6 +2,62 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## About This App
+
+**Learn Thai** is an interactive flashcard application for learning to read Thai script. It helps users master Thai consonants, vowels, and common vocabulary through elegant flashcards with text-to-speech pronunciation.
+
+**Live URL:** https://learn-thai-beta.vercel.app
+
+### Features
+- Interactive flip cards with smooth animations
+- Text-to-speech pronunciation (Google TTS with Web Speech API fallback)
+- Keyboard navigation (arrow keys to navigate, spacebar to flip)
+- Practice mode with scoring and progress tracking
+- Responsive design for mobile and desktop
+
+## Project Structure
+
+```
+src/
+├── data/                    # Static data files
+│   ├── consonants.js        # 31 Thai consonants (23 essential + 8 secondary)
+│   ├── vowels.js            # 20 Thai vowels (12 essential + 8 secondary)
+│   └── words.js             # 100+ vocabulary words in 7 categories
+├── composables/
+│   └── useSpeech.js         # Text-to-speech composable
+├── components/
+│   ├── BaseArrowButton.vue  # Navigation arrow buttons
+│   ├── BasePillButton.vue   # Category toggle buttons
+│   ├── BaseSoundButton.vue  # Audio playback button
+│   ├── ClassBadge.vue       # Consonant class indicator (Low/Mid/High)
+│   ├── FlashCard.vue        # Flip card with front/back slots
+│   ├── LengthBadge.vue      # Vowel length indicator (Short/Long)
+│   ├── ProgressBar.vue      # Card progress tracker
+│   └── TheNavbar.vue        # Sticky navigation bar
+├── views/
+│   ├── HomeView.vue         # Landing page with section cards
+│   ├── ConsonantsView.vue   # Thai consonants flashcards
+│   ├── VowelsView.vue       # Thai vowels flashcards
+│   ├── WordsView.vue        # Vocabulary flashcards (7 categories)
+│   └── PracticeView.vue     # Quiz mode with scoring
+├── router/index.js          # Vue Router configuration
+├── assets/main.css          # Tailwind config + custom CSS
+├── App.vue                  # Root component
+└── main.js                  # App entry point
+```
+
+### Routes
+| Path | View | Description |
+|------|------|-------------|
+| `/` | HomeView | Landing page |
+| `/consonants` | ConsonantsView | Learn Thai consonants |
+| `/vowels` | VowelsView | Learn Thai vowels |
+| `/words` | WordsView | Learn vocabulary |
+| `/practice` | PracticeView | Test your knowledge |
+
+### Word Categories
+Pronouns, Questions, Verbs, Nouns, Adjectives, Particles, Numbers
+
 ## Commands
 
 ```sh
