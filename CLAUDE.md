@@ -64,7 +64,18 @@ Pronouns, Questions, Verbs, Nouns, Adjectives, Particles, Numbers
 npm run dev      # Start development server with hot-reload
 npm run build    # Production build
 npm run preview  # Preview production build locally
+vercel --prod    # Deploy to production (Vercel)
 ```
+
+## Deployment
+
+The app is hosted on **Vercel**. To deploy changes to production:
+
+```sh
+vercel --prod
+```
+
+This deploys directly to https://learn-thai-beta.vercel.app
 
 ## Styling Guidelines
 
