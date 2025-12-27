@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useSwipeNavigation } from '@/composables/useSwipeNavigation'
 
 const props = defineProps({
@@ -7,15 +7,41 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  mode: {
+    type: String,
+    default: 'navigate',
+    validator: (value) => ['navigate', 'answer'].includes(value),
+  },
 })
 
-const emit = defineEmits(['click', 'swipe-left', 'swipe-right'])
+const emit = defineEmits(['click', 'swipe-left', 'swipe-right', 'answer-correct', 'answer-incorrect'])
 
 const cardRef = ref(null)
 
+const swipeEnabled = computed(() => {
+  if (props.mode === 'answer') {
+    return props.flipped
+  }
+  return true
+})
+
 const { cardStyle, isSwiping } = useSwipeNavigation(cardRef, {
-  onSwipeLeft: () => emit('swipe-left'),
-  onSwipeRight: () => emit('swipe-right'),
+  onSwipeLeft: () => {
+    if (!swipeEnabled.value) return
+    if (props.mode === 'answer') {
+      emit('answer-incorrect')
+    } else {
+      emit('swipe-left')
+    }
+  },
+  onSwipeRight: () => {
+    if (!swipeEnabled.value) return
+    if (props.mode === 'answer') {
+      emit('answer-correct')
+    } else {
+      emit('swipe-right')
+    }
+  },
 })
 
 const handleClick = () => {

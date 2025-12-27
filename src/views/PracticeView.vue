@@ -256,7 +256,10 @@ const getSoundText = (card) => {
 
       <FlashCard
         :flipped="practiceFlipped"
+        mode="answer"
         @click="practiceFlipped = !practiceFlipped"
+        @answer-correct="handleAnswer(true)"
+        @answer-incorrect="handleAnswer(false)"
       >
         <template #front>
           <span
@@ -321,20 +324,25 @@ const getSoundText = (card) => {
       <!-- Answer buttons -->
       <div
         v-if="practiceFlipped"
-        class="flex gap-3 justify-center mt-8 flex-wrap"
+        class="mt-8"
       >
-        <button
-          class="px-6 py-3.5 border border-coral rounded bg-coral-light text-coral font-semibold text-sm cursor-pointer flex items-center gap-1.5 hover:bg-coral hover:text-paper transition-colors"
-          @click="handleAnswer(false)"
-        >
-          ✗ Didn't Know
-        </button>
-        <button
-          class="px-6 py-3.5 border-none rounded bg-azure text-paper font-semibold text-sm cursor-pointer flex items-center gap-1.5 hover:bg-azure-bright transition-colors"
-          @click="handleAnswer(true)"
-        >
-          ✓ Got It
-        </button>
+        <p class="font-display text-center text-ink-muted text-xs mb-4">
+          Swipe left if you didn't know, swipe right if you got it
+        </p>
+        <div class="flex gap-3 justify-center flex-wrap">
+          <button
+            class="px-6 py-3.5 border border-coral rounded bg-coral-light text-coral font-semibold text-sm cursor-pointer flex items-center gap-1.5 hover:bg-coral hover:text-paper transition-colors"
+            @click="handleAnswer(false)"
+          >
+            ← Didn't Know
+          </button>
+          <button
+            class="px-6 py-3.5 border-none rounded bg-azure text-paper font-semibold text-sm cursor-pointer flex items-center gap-1.5 hover:bg-azure-bright transition-colors"
+            @click="handleAnswer(true)"
+          >
+            Got It →
+          </button>
+        </div>
       </div>
 
       <p
