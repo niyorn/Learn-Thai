@@ -13,21 +13,28 @@ const emit = defineEmits(['click', 'swipe-left', 'swipe-right'])
 
 const cardRef = ref(null)
 
-useSwipeNavigation(cardRef, {
+const { cardStyle, isSwiping } = useSwipeNavigation(cardRef, {
   onSwipeLeft: () => emit('swipe-left'),
   onSwipeRight: () => emit('swipe-right'),
 })
+
+const handleClick = () => {
+  if (!isSwiping.value) {
+    emit('click')
+  }
+}
 </script>
 
 <template>
   <div
     ref="cardRef"
-    class="w-full max-w-[440px] h-80 cursor-pointer mx-auto touch-pan-y"
+    class="w-full max-w-[440px] h-80 cursor-pointer mx-auto touch-pan-y select-none"
     style="perspective: 1200px"
-    @click="$emit('click')"
+    @click="handleClick"
   >
     <div
       :class="['card-flip relative w-full h-full', { flipped }]"
+      :style="cardStyle"
     >
       <!-- Front -->
       <div
