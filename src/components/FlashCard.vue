@@ -1,17 +1,28 @@
 <script setup>
-defineProps({
+import { ref } from 'vue'
+import { useSwipeNavigation } from '@/composables/useSwipeNavigation'
+
+const props = defineProps({
   flipped: {
     type: Boolean,
     default: false,
   },
 })
 
-defineEmits(['click'])
+const emit = defineEmits(['click', 'swipe-left', 'swipe-right'])
+
+const cardRef = ref(null)
+
+useSwipeNavigation(cardRef, {
+  onSwipeLeft: () => emit('swipe-left'),
+  onSwipeRight: () => emit('swipe-right'),
+})
 </script>
 
 <template>
   <div
-    class="w-full max-w-[440px] h-80 cursor-pointer mx-auto"
+    ref="cardRef"
+    class="w-full max-w-[440px] h-80 cursor-pointer mx-auto touch-pan-y"
     style="perspective: 1200px"
     @click="$emit('click')"
   >

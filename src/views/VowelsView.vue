@@ -109,6 +109,8 @@ useEventListener('keydown', (event) => {
     <FlashCard
       :flipped="flipped"
       @click="toggleFlip"
+      @swipe-left="nextCard"
+      @swipe-right="prevCard"
     >
       <template #front>
         <span class="font-thai text-[100px] sm:text-[100px] max-sm:text-[80px] font-semibold text-ink leading-none">
