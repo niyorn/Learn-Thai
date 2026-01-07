@@ -1,13 +1,48 @@
 <script setup>
+import { ref, computed } from 'vue'
 import { vowelsData } from '@/data/vowels'
-import FlashCardView from '@/components/flashcard/FlashCardView.vue'
+import { useKeyboardNavigation } from '@/composables/useKeyboardNavigation'
 import BaseBadge from '@/components/base/BaseBadge.vue'
 import BaseSoundButton from '@/components/BaseSoundButton.vue'
+import ProgressBar from '@/components/ProgressBar.vue'
+import BackLink from '@/components/layout/BackLink.vue'
+import SectionHeader from '@/components/layout/SectionHeader.vue'
+import FilterButtonGroup from '@/components/flashcard/FilterButtonGroup.vue'
+import CardNavigation from '@/components/flashcard/CardNavigation.vue'
 
 const filterOptions = [
   { value: 'essential', label: 'Essential · 12' },
   { value: 'secondary', label: 'Secondary · 8' }
 ]
+
+const activeFilter = ref('essential')
+const cardIndex = ref(0)
+
+const items = computed(() => vowelsData[activeFilter.value] || [])
+const current = computed(() => items.value[cardIndex.value] || {})
+
+const changeFilter = (filter) => {
+  activeFilter.value = filter
+  cardIndex.value = 0
+}
+
+const nextCard = () => {
+  if (cardIndex.value < items.value.length - 1) {
+    cardIndex.value++
+  }
+}
+
+const prevCard = () => {
+  if (cardIndex.value > 0) {
+    cardIndex.value--
+  }
+}
+
+useKeyboardNavigation({
+  onNext: nextCard,
+  onPrev: prevCard,
+  onFlip: () => {} // No flip needed
+})
 
 // Format Thai text to style the dotted circle placeholder
 const formatVowel = (text) => {
@@ -16,52 +51,68 @@ const formatVowel = (text) => {
 </script>
 
 <template>
-  <FlashCardView
-    title="Vowels"
-    subtitle="สระไทย"
-    :data="vowelsData"
-    :filter-options="filterOptions"
-    default-filter="essential"
-    sound-text-field="example"
-    thai-text-size="text-[100px] max-sm:text-[80px]"
-  >
-    <template #front="{ item, thaiTextSize }">
-      <span
-        class="font-thai font-semibold text-ink leading-none"
-        :class="thaiTextSize"
-        v-html="formatVowel(item.thai)"
-      />
-    </template>
+  <div class="px-4 py-8 max-w-xl mx-auto">
+    <BackLink />
 
-    <template #back="{ item }">
-      <!-- Vowel sound with pronunciation -->
-      <div class="flex items-center gap-3 mb-4">
-        <BaseSoundButton
-          :text="item.sample"
-          size="md"
-          variant="light"
-        />
-        <div class="font-display text-4xl font-semibold">
-          /{{ item.sound }}/
+    <SectionHeader
+      title="Vowels"
+      subtitle="สระไทย"
+    />
+
+    <FilterButtonGroup
+      :options="filterOptions"
+      :model-value="activeFilter"
+      @update:model-value="changeFilter"
+    />
+
+    <ProgressBar
+      :current="cardIndex"
+      :total="items.length"
+    />
+
+    <!-- Single card showing all info -->
+    <div class="w-full max-w-[440px] mx-auto">
+      <div class="bg-paper border border-gold-light rounded-lg shadow-soft p-6">
+        <!-- Vowel character with sound -->
+        <div class="flex flex-col items-center mb-6">
+          <span
+            class="font-thai font-semibold text-ink leading-none text-[80px] max-sm:text-[64px]"
+            v-html="formatVowel(current.thai)"
+          />
+          <div class="flex items-center gap-3 mt-4">
+            <BaseSoundButton
+              :text="current.sample"
+              size="md"
+            />
+            <span class="font-display text-2xl font-semibold text-ink">
+              /{{ current.sound }}/
+            </span>
+            <BaseBadge
+              :variant="current.length?.toLowerCase()"
+              :label="current.length"
+            />
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-gold-light my-4" />
+
+        <!-- Example word section -->
+        <div class="flex items-center justify-center gap-3 flex-wrap">
+          <BaseSoundButton
+            :text="current.example"
+            size="sm"
+          />
+          <span class="font-thai text-3xl text-ink">{{ current.example }}</span>
+          <span class="text-ink-muted">—</span>
+          <span class="font-display text-lg text-ink-light">{{ current.exampleMeaning }}</span>
         </div>
       </div>
+    </div>
 
-      <BaseBadge
-        :variant="item.length.toLowerCase()"
-        :label="`${item.length} vowel`"
-      />
-
-      <!-- Example word with sound -->
-      <div class="mt-5 px-5 py-3 bg-white/10 rounded flex items-center gap-3 flex-wrap justify-center">
-        <BaseSoundButton
-          :text="item.example"
-          size="sm"
-          variant="light"
-        />
-        <span class="font-thai text-2xl">{{ item.example }}</span>
-        <span class="opacity-50 text-base">—</span>
-        <span class="font-display text-base">{{ item.exampleMeaning }}</span>
-      </div>
-    </template>
-  </FlashCardView>
+    <CardNavigation
+      @prev="prevCard"
+      @next="nextCard"
+    />
+  </div>
 </template>
