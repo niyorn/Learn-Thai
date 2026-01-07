@@ -20,10 +20,12 @@ export function useSwipeNavigation(target, { onSwipeLeft, onSwipeRight, threshol
   const opacity = computed(() => Math.max(0.5, 1 - Math.abs(offsetX.value) / 300))
 
   const cardStyle = computed(() => {
-    // Card entering from right (with rotation like swipe)
+    // Card entering from opposite side of swipe direction
     if (isEntering.value) {
+      // Swipe left = next card enters from right, swipe right = prev card enters from left
+      const enterX = swipeDirection.value === 'left' ? 350 : -350
       return {
-        transform: 'translateX(350px) rotate(35deg)',
+        transform: `translateX(${enterX}px) rotate(${enterX * 0.1}deg)`,
         opacity: 0,
         transition: 'none',
       }
