@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { useSpeech } from '@/composables/useSpeech'
 
 const props = defineProps({
@@ -10,6 +11,11 @@ const props = defineProps({
     type: String,
     default: 'md',
     validator: (value) => ['sm', 'md', 'lg'].includes(value),
+  },
+  variant: {
+    type: String,
+    default: 'default',
+    validator: (value) => ['default', 'light'].includes(value),
   },
 })
 
@@ -27,6 +33,17 @@ const iconSizes = {
   lg: 'w-6 h-6',
 }
 
+const variantClasses = computed(() => {
+  if (props.variant === 'light') {
+    return isPlaying.value
+      ? 'border-paper bg-paper text-azure scale-95'
+      : 'border-paper/70 bg-transparent text-paper/90 hover:border-paper hover:text-paper'
+  }
+  return isPlaying.value
+    ? 'border-azure bg-azure text-paper scale-95'
+    : 'border-azure bg-transparent text-azure'
+})
+
 const handleClick = (event) => {
   event.stopPropagation()
   speak(props.text)
@@ -37,8 +54,8 @@ const handleClick = (event) => {
   <button
     :class="[
       sizeClasses[size],
-      'flex items-center justify-center rounded-full border-2 border-azure cursor-pointer transition-all duration-300',
-      isPlaying ? 'bg-azure text-paper scale-95' : 'bg-transparent text-azure',
+      'flex items-center justify-center rounded-full border-2 cursor-pointer transition-all duration-300',
+      variantClasses,
     ]"
     @click="handleClick"
   >

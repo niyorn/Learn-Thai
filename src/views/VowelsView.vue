@@ -1,8 +1,8 @@
 <script setup>
-import { computed } from 'vue'
 import { vowelsData } from '@/data/vowels'
 import FlashCardView from '@/components/flashcard/FlashCardView.vue'
 import BaseBadge from '@/components/base/BaseBadge.vue'
+import BaseSoundButton from '@/components/BaseSoundButton.vue'
 
 const filterOptions = [
   { value: 'essential', label: 'Essential · 12' },
@@ -34,14 +34,30 @@ const formatVowel = (text) => {
     </template>
 
     <template #back="{ item }">
-      <div class="font-display text-4xl font-semibold mb-4">
-        /{{ item.sound }}/
+      <!-- Vowel sound with pronunciation -->
+      <div class="flex items-center gap-3 mb-4">
+        <BaseSoundButton
+          :text="item.sample"
+          size="md"
+          variant="light"
+        />
+        <div class="font-display text-4xl font-semibold">
+          /{{ item.sound }}/
+        </div>
       </div>
+
       <BaseBadge
         :variant="item.length.toLowerCase()"
         :label="`${item.length} vowel`"
       />
+
+      <!-- Example word with sound -->
       <div class="mt-5 px-5 py-3 bg-white/10 rounded flex items-center gap-3 flex-wrap justify-center">
+        <BaseSoundButton
+          :text="item.example"
+          size="sm"
+          variant="light"
+        />
         <span class="font-thai text-2xl">{{ item.example }}</span>
         <span class="opacity-50 text-base">—</span>
         <span class="font-display text-base">{{ item.exampleMeaning }}</span>
