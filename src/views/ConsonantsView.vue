@@ -1,105 +1,55 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useEventListener } from '@vueuse/core'
+import { ref } from 'vue'
 import { consonantsData } from '@/data/consonants'
+import { useCardNavigation } from '@/composables/useCardNavigation'
+import { useKeyboardNavigation } from '@/composables/useKeyboardNavigation'
 import FlashCard from '@/components/FlashCard.vue'
-import BasePillButton from '@/components/BasePillButton.vue'
-import BaseArrowButton from '@/components/BaseArrowButton.vue'
 import BaseSoundButton from '@/components/BaseSoundButton.vue'
-import ClassBadge from '@/components/ClassBadge.vue'
+import BaseBadge from '@/components/base/BaseBadge.vue'
 import ProgressBar from '@/components/ProgressBar.vue'
+import BackLink from '@/components/layout/BackLink.vue'
+import SectionHeader from '@/components/layout/SectionHeader.vue'
+import FilterButtonGroup from '@/components/flashcard/FilterButtonGroup.vue'
+import CardNavigation from '@/components/flashcard/CardNavigation.vue'
 
 const subSection = ref('essential')
-const cardIndex = ref(0)
-const flipped = ref(false)
 
-const items = computed(() =>
-  subSection.value === 'essential' ? consonantsData.essential : consonantsData.secondary
-)
+const filterOptions = [
+  { value: 'essential', label: 'Essential · 23' },
+  { value: 'secondary', label: 'Secondary · 8' }
+]
 
-const current = computed(() => items.value[cardIndex.value])
-
-const resetCard = () => {
-  cardIndex.value = 0
-  flipped.value = false
-}
-
-const nextCard = () => {
-  flipped.value = false
-  setTimeout(() => {
-    cardIndex.value = (cardIndex.value + 1) % items.value.length
-  }, 150)
-}
-
-const prevCard = () => {
-  flipped.value = false
-  setTimeout(() => {
-    cardIndex.value = (cardIndex.value - 1 + items.value.length) % items.value.length
-  }, 150)
-}
-
-const toggleFlip = () => {
-  flipped.value = !flipped.value
-}
+const { cardIndex, flipped, items, current, resetCard, nextCard, prevCard, toggleFlip } =
+  useCardNavigation(() =>
+    subSection.value === 'essential' ? consonantsData.essential : consonantsData.secondary
+  )
 
 const changeSubSection = (section) => {
   subSection.value = section
   resetCard()
 }
 
-// Keyboard navigation
-useEventListener('keydown', (event) => {
-  if (event.key === 'ArrowRight') nextCard()
-  if (event.key === 'ArrowLeft') prevCard()
-  if (event.key === ' ') {
-    event.preventDefault()
-    toggleFlip()
-  }
+useKeyboardNavigation({
+  onNext: nextCard,
+  onPrev: prevCard,
+  onFlip: toggleFlip
 })
 </script>
 
 <template>
   <div class="px-4 py-8 max-w-xl mx-auto">
-    <RouterLink
-      to="/"
-      class="inline-flex items-center gap-2 text-ink-muted hover:text-azure transition-colors mb-6"
-    >
-      <svg
-        class="w-5 h-5"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path d="M19 12H5M12 19l-7-7 7-7" />
-      </svg>
-      <span class="font-display text-sm">Back to Home</span>
-    </RouterLink>
+    <BackLink />
 
-    <div class="thai-border text-center mb-8 pt-6">
-      <h2 class="font-display text-3xl font-semibold text-ink mb-2">
-        Consonants
-      </h2>
-      <p class="font-thai text-ink-muted text-base">
-        พยัญชนะไทย
-      </p>
-    </div>
+    <SectionHeader
+      title="Consonants"
+      subtitle="พยัญชนะไทย"
+    />
 
-    <div class="flex gap-2 justify-center mb-8 flex-wrap">
-      <BasePillButton
-        :active="subSection === 'essential'"
-        @click="changeSubSection('essential')"
-      >
-        Essential · 23
-      </BasePillButton>
-      <BasePillButton
-        :active="subSection === 'secondary'"
-        @click="changeSubSection('secondary')"
-      >
-        Secondary · 8
-      </BasePillButton>
-    </div>
+    <FilterButtonGroup
+      :options="filterOptions"
+      :model-value="subSection"
+      @update:model-value="changeSubSection"
+    />
 
     <ProgressBar
       :current="cardIndex"
@@ -137,19 +87,17 @@ useEventListener('keydown', (event) => {
         <div class="font-display text-4xl font-semibold mb-5">
           /{{ current.sound }}/
         </div>
-        <ClassBadge :class-type="current.class" />
+        <BaseBadge
+          :variant="current.class.toLowerCase()"
+          :label="`${current.class} Class`"
+          show-dot
+        />
       </template>
     </FlashCard>
 
-    <div class="flex gap-4 justify-center items-center mt-8">
-      <BaseArrowButton
-        direction="left"
-        @click="prevCard"
-      />
-      <BaseArrowButton
-        direction="right"
-        @click="nextCard"
-      />
-    </div>
+    <CardNavigation
+      @prev="prevCard"
+      @next="nextCard"
+    />
   </div>
 </template>
