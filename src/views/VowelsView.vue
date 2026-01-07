@@ -46,10 +46,22 @@ useKeyboardNavigation({
   onFlip: () => {} // No flip needed
 })
 
-const { cardStyle } = useSwipeNavigation(cardRef, {
+const { cardStyle, triggerExit } = useSwipeNavigation(cardRef, {
   onSwipeLeft: nextCard,
   onSwipeRight: prevCard
 })
+
+const animateNext = () => {
+  if (cardIndex.value < items.value.length - 1) {
+    triggerExit('left', nextCard)
+  }
+}
+
+const animatePrev = () => {
+  if (cardIndex.value > 0) {
+    triggerExit('right', prevCard)
+  }
+}
 
 // Format Thai text to style the dotted circle placeholder
 const formatVowel = (text) => {
@@ -122,8 +134,8 @@ const formatVowel = (text) => {
     </div>
 
     <CardNavigation
-      @prev="prevCard"
-      @next="nextCard"
+      @prev="animatePrev"
+      @next="animateNext"
     />
   </div>
 </template>

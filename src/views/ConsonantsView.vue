@@ -46,10 +46,22 @@ useKeyboardNavigation({
   onFlip: () => {}
 })
 
-const { cardStyle } = useSwipeNavigation(cardRef, {
+const { cardStyle, triggerExit } = useSwipeNavigation(cardRef, {
   onSwipeLeft: nextCard,
   onSwipeRight: prevCard
 })
+
+const animateNext = () => {
+  if (cardIndex.value < items.value.length - 1) {
+    triggerExit('left', nextCard)
+  }
+}
+
+const animatePrev = () => {
+  if (cardIndex.value > 0) {
+    triggerExit('right', prevCard)
+  }
+}
 </script>
 
 <template>
@@ -127,8 +139,8 @@ const { cardStyle } = useSwipeNavigation(cardRef, {
     </div>
 
     <CardNavigation
-      @prev="prevCard"
-      @next="nextCard"
+      @prev="animatePrev"
+      @next="animateNext"
     />
   </div>
 </template>

@@ -1,0 +1,115 @@
+{
+  "receipt_id": 3931638238,
+  "receipt_type": 0,
+  "seller_user_id": 1115131734,
+  "seller_email": "office@dornjohannes.de",
+  "buyer_user_id": 839792539,
+  "buyer_email": null,
+  "name": "Inga Flar",
+  "first_line": null,
+  "second_line": null,
+  "city": null,
+  "state": null,
+  "zip": null,
+  "status": "Paid",
+  "formatted_address": null,
+  "country_iso": null,
+  "payment_method": "cc",
+  "payment_email": null,
+  "message_from_payment": null,
+  "message_from_seller": "Vielen Dank für deinen Kauf bei BIRDSOUL 🐦\r\n\r\n\r\nDein Vogelhaus wird sorgfältig verpackt und bald an dich versendet.\r\n\r\nMit deiner Entscheidung für ein Holz-Vogelhaus unterstützt du Wildvögel dabei, einen geschützten Futterplatz zu finden – besonders in nass-kalten Zeiten macht das einen echten Unterschied.\r\n\r\nEin kleiner Tipp:💡\r\nWindgeschützt aufgehängt und regelmäßig gereinigt fühlen sich die Vögel besonders wohl.\r\n\r\nSollte etwas nicht wie erwartet sein, schreib uns bitte direkt. Wir kümmern uns darum.\r\n\r\n\r\nViel Freude beim Beobachten der Vögel\r\ndein BIRDSOUL-Team",
+  "message_from_buyer": "",
+  "is_shipped": false,
+  "is_paid": true,
+  "create_timestamp": 1767441610,
+  "created_timestamp": 1767441610,
+  "update_timestamp": 1767441643,
+  "updated_timestamp": 1767441643,
+  "is_gift": false,
+  "gift_message": "",
+  "gift_sender": "",
+  "grandtotal": {
+    "amount": 5999,
+    "divisor": 100,
+    "currency_code": "EUR"
+  },
+  "subtotal": {
+    "amount": 5999,
+    "divisor": 100,
+    "currency_code": "EUR"
+  },
+  "total_price": {
+    "amount": 5999,
+    "divisor": 100,
+    "currency_code": "EUR"
+  },
+  "total_shipping_cost": {
+    "amount": 0,
+    "divisor": 100,
+    "currency_code": "EUR"
+  },
+  "total_tax_cost": {
+    "amount": 0,
+    "divisor": 100,
+    "currency_code": "EUR"
+  },
+  "total_vat_cost": {
+    "amount": 0,
+    "divisor": 100,
+    "currency_code": "EUR"
+  },
+  "discount_amt": {
+    "amount": 0,
+    "divisor": 100,
+    "currency_code": "EUR"
+  },
+  "gift_wrap_price": {
+    "amount": 0,
+    "divisor": 100,
+    "currency_code": "EUR"
+  },
+  "shipments": [],
+  "transactions": [
+    {
+      "transaction_id": 4903276470,
+      "title": "Wooden Bird House for Garden – Large Outdoor Birdhouse, Weatherproof Hanging Bird Feeder, Gift for Bird Lovers",
+      "description": "Bring life to your garden and help wild birds stay safe and dry.\nThis large wooden bird house is designed for outdoor use and protects bird food from rain and moisture – making it ideal for year-round feeding.\n\nWhy you&#39;ll love it:\n\n- Made from natural pine wood\n- Weatherproof design for outdoor gardens and balconies\n- Special sloped base helps drain rainwater and keep food dry\n- Treated with food-safe wax oil – no harmful chemicals\n- Easy to hang, stable and durable\n\nPerfect for your garden, patio or balcony, this rustic birdhouse blends naturally into outdoor spaces and attracts birds like tits and robins.\n\nIt also makes a thoughtful gift for bird lovers, gardeners and nature enthusiasts – ideal for housewarming or seasonal gifting.\n\nEach piece highlights the natural character of wood, making each birdhouse slightly unique.",
+      "seller_user_id": 1115131734,
+      "buyer_user_id": 839792539,
+      "create_timestamp": 1767441610,
+      "created_timestamp": 1767441610,
+      "paid_timestamp": 1767441642,
+      "shipped_timestamp": null,
+      "quantity": 1,
+      "listing_image_id": 7604498695,
+      "receipt_id": 3931638238,
+      "is_digital": false,
+      "file_data": "",
+      "listing_id": 4433757491,
+      "sku": "BS_BH_XXL_SCA_DB",
+      "product_id": 28957346492,
+      "transaction_type": "listing",
+      "price": {
+        "amount": 5999,
+        "divisor": 100,
+        "currency_code": "EUR"
+      },
+      "shipping_cost": {
+        "amount": 0,
+        "divisor": 100,
+        "currency_code": "EUR"
+      },
+      "variations": [],
+      "product_data": [],
+      "shipping_profile_id": 279742887933,
+      "min_processing_days": 1,
+      "max_processing_days": 2,
+      "shipping_method": null,
+      "shipping_upgrade": null,
+      "expected_ship_date": 1767826740,
+      "buyer_coupon": 0,
+      "shop_coupon": 0
+    }
+  ],
+  "refunds": []
+}
