@@ -75,7 +75,7 @@ useKeyboardNavigation({
           </span>
           <div class="flex items-center gap-3 mt-3">
             <BaseSoundButton
-              :text="current.thai"
+              :text="current.nameThai"
               size="md"
             />
             <span class="font-display text-2xl font-semibold text-ink">
