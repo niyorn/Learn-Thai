@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { vowelsData } from '@/data/vowels'
 import { useKeyboardNavigation } from '@/composables/useKeyboardNavigation'
+import { useSwipeNavigation } from '@/composables/useSwipeNavigation'
 import BaseBadge from '@/components/base/BaseBadge.vue'
 import BaseSoundButton from '@/components/BaseSoundButton.vue'
 import ProgressBar from '@/components/ProgressBar.vue'
@@ -17,6 +18,7 @@ const filterOptions = [
 
 const activeFilter = ref('essential')
 const cardIndex = ref(0)
+const cardRef = ref(null)
 
 const items = computed(() => vowelsData[activeFilter.value] || [])
 const current = computed(() => items.value[cardIndex.value] || {})
@@ -42,6 +44,11 @@ useKeyboardNavigation({
   onNext: nextCard,
   onPrev: prevCard,
   onFlip: () => {} // No flip needed
+})
+
+const { cardStyle } = useSwipeNavigation(cardRef, {
+  onSwipeLeft: nextCard,
+  onSwipeRight: prevCard
 })
 
 // Format Thai text to style the dotted circle placeholder
@@ -71,7 +78,11 @@ const formatVowel = (text) => {
     />
 
     <!-- Single card showing all info -->
-    <div class="w-full max-w-[440px] mx-auto">
+    <div
+      ref="cardRef"
+      class="w-full max-w-[440px] mx-auto touch-pan-y select-none"
+      :style="cardStyle"
+    >
       <div class="bg-paper border border-gold-light rounded-lg shadow-soft p-6">
         <!-- Vowel character with sound -->
         <div class="flex flex-col items-center mb-6">
