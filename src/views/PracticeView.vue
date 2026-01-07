@@ -85,6 +85,14 @@ const resetPractice = () => {
   practiceCards.value = []
 }
 
+const practiceMissed = () => {
+  const missed = missedCards.value.map((item) => item.card)
+  practiceCards.value = shuffleArray(missed)
+  practiceIndex.value = 0
+  practiceFlipped.value = false
+  practiceStats.value = { correct: 0, incorrect: 0, seen: [] }
+}
+
 const getSoundText = (card) => {
   if (card.type === 'vowel') return card.example
   return card.thai
@@ -209,6 +217,13 @@ const handleButtonAnswer = (correct) => {
             @click="startPractice(practiceFilter)"
           >
             Practice Again
+          </button>
+          <button
+            v-if="missedCards.length > 0"
+            class="px-6 py-3 border border-coral rounded bg-coral-light text-coral font-semibold text-sm cursor-pointer hover:bg-coral hover:text-paper transition-colors"
+            @click="practiceMissed"
+          >
+            Practice Missed ({{ missedCards.length }})
           </button>
           <button
             class="px-6 py-3 border border-gold-light rounded bg-transparent text-ink-light font-medium text-sm cursor-pointer hover:border-azure hover:text-azure transition-colors"
