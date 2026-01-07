@@ -1,8 +1,18 @@
 <script setup>
+/**
+ * ConsonantsView - Thai consonants learning page
+ *
+ * Displays Thai consonants in a swipeable card format with:
+ * - Essential (23) and Secondary (8) consonant sets
+ * - Swipe gestures for navigation
+ * - Keyboard navigation (arrow keys)
+ * - Audio pronunciation
+ *
+ * Uses useSwipeableCard composable for all navigation logic.
+ */
 import { ref, computed } from 'vue'
 import { consonantsData } from '@/data/consonants'
-import { useKeyboardNavigation } from '@/composables/useKeyboardNavigation'
-import { useSwipeNavigation } from '@/composables/useSwipeNavigation'
+import { useSwipeableCard } from '@/composables/useSwipeableCard'
 import BaseBadge from '@/components/base/BaseBadge.vue'
 import BaseSoundButton from '@/components/BaseSoundButton.vue'
 import ProgressBar from '@/components/ProgressBar.vue'
@@ -11,56 +21,64 @@ import SectionHeader from '@/components/layout/SectionHeader.vue'
 import FilterButtonGroup from '@/components/flashcard/FilterButtonGroup.vue'
 import CardNavigation from '@/components/flashcard/CardNavigation.vue'
 
+// ============================================
+// Filter Configuration
+// ============================================
+
+/**
+ * Available consonant categories with their labels.
+ * Used by FilterButtonGroup component.
+ */
 const filterOptions = [
   { value: 'essential', label: 'Essential · 23' },
   { value: 'secondary', label: 'Secondary · 8' }
 ]
 
+/**
+ * Currently active filter.
+ * Controls which consonant set is displayed.
+ */
 const activeFilter = ref('essential')
-const cardIndex = ref(0)
-const cardRef = ref(null)
 
-const items = computed(() => consonantsData[activeFilter.value] || [])
-const current = computed(() => items.value[cardIndex.value] || {})
+// ============================================
+// Card Navigation Setup
+// ============================================
 
+/**
+ * useSwipeableCard provides all navigation logic:
+ * - cardRef: attach to swipeable element
+ * - cardStyle: CSS for swipe animations
+ * - current: current consonant object
+ * - animateNext/animatePrev: for button clicks
+ * - resetCard: called when filter changes
+ *
+ * The itemsGetter function is reactive - when activeFilter
+ * changes, items automatically update.
+ */
+const {
+  cardRef,
+  cardIndex,
+  items,
+  current,
+  cardStyle,
+  animateNext,
+  animatePrev,
+  resetCard
+} = useSwipeableCard(
+  () => consonantsData[activeFilter.value] || []
+)
+
+// ============================================
+// Filter Change Handler
+// ============================================
+
+/**
+ * Handle filter category change.
+ * Resets to first card when switching between essential/secondary.
+ */
 const changeFilter = (filter) => {
   activeFilter.value = filter
-  cardIndex.value = 0
-}
-
-const nextCard = () => {
-  if (cardIndex.value < items.value.length - 1) {
-    cardIndex.value++
-  }
-}
-
-const prevCard = () => {
-  if (cardIndex.value > 0) {
-    cardIndex.value--
-  }
-}
-
-useKeyboardNavigation({
-  onNext: nextCard,
-  onPrev: prevCard,
-  onFlip: () => {}
-})
-
-const { cardStyle, triggerExit } = useSwipeNavigation(cardRef, {
-  onSwipeLeft: nextCard,
-  onSwipeRight: prevCard
-})
-
-const animateNext = () => {
-  if (cardIndex.value < items.value.length - 1) {
-    triggerExit('left', nextCard)
-  }
-}
-
-const animatePrev = () => {
-  if (cardIndex.value > 0) {
-    triggerExit('right', prevCard)
-  }
+  resetCard()
 }
 </script>
 
@@ -84,14 +102,14 @@ const animatePrev = () => {
       :total="items.length"
     />
 
-    <!-- Single card showing all info -->
+    <!-- Swipeable Card Container -->
     <div
       ref="cardRef"
       class="w-full max-w-[440px] mx-auto touch-pan-y select-none"
       :style="cardStyle"
     >
       <div class="bg-paper border border-gold-light rounded-lg shadow-soft p-6">
-        <!-- Consonant character with sound -->
+        <!-- Consonant Character & Sound -->
         <div class="flex flex-col items-center mb-4">
           <span class="font-thai font-semibold text-ink leading-none text-[100px] max-sm:text-[80px]">
             {{ current.thai }}
@@ -112,7 +130,7 @@ const animatePrev = () => {
           </div>
         </div>
 
-        <!-- Consonant name and meaning -->
+        <!-- Consonant Name & Meaning -->
         <div class="text-center mb-4">
           <div class="font-display text-lg text-ink">
             {{ current.name }}
@@ -122,10 +140,9 @@ const animatePrev = () => {
           </div>
         </div>
 
-        <!-- Divider -->
         <div class="border-t border-gold-light my-4" />
 
-        <!-- Example word section -->
+        <!-- Example Word -->
         <div class="flex items-center justify-center gap-3 flex-wrap">
           <BaseSoundButton
             :text="current.example"
@@ -138,6 +155,7 @@ const animatePrev = () => {
       </div>
     </div>
 
+    <!-- Navigation Buttons -->
     <CardNavigation
       @prev="animatePrev"
       @next="animateNext"
