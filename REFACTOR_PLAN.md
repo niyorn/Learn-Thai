@@ -468,7 +468,26 @@ const filterOptions = [
 
 ---
 
-## Phase 4: Simplify PracticeView (Priority: Medium)
+## Phase 4: Simplify PracticeView (Priority: Medium) ✅ COMPLETED
+
+> **Status:** Completed on 2026-01-07
+>
+> **Changes Made:**
+> - Created `src/composables/usePracticeState.js` - manages practice session state
+> - Created `src/composables/usePracticeDeckBuilder.js` - builds and shuffles card decks
+> - Refactored `PracticeView.vue` from 368 LOC to 311 LOC (15% reduction)
+> - Replaced ClassBadge/LengthBadge with BaseBadge
+> - Added BackLink and SectionHeader components
+>
+> **Result:** Better separation of concerns, reusable practice logic
+>
+> **Testing (Playwriter MCP):** ✅ All tests passed
+> - Category selection page renders correctly
+> - BackLink component works
+> - Practice mode starts with selected category
+> - Progress bar updates correctly
+> - Answer buttons (Got It / Didn't Know) work
+> - Stats tracking (correct/incorrect counts) works
 
 ### 4.1 Create `usePracticeState.js`
 
