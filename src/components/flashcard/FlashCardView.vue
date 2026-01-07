@@ -43,8 +43,22 @@ const props = defineProps({
 
 const activeFilter = ref(props.defaultFilter)
 
+const flashCardRef = ref(null)
+
 const { cardIndex, flipped, items, current, resetCard, nextCard, prevCard, toggleFlip } =
   useCardNavigation(() => props.data[activeFilter.value] || [])
+
+const animateNext = () => {
+  if (cardIndex.value < items.value.length - 1) {
+    flashCardRef.value?.animateOut('left', nextCard)
+  }
+}
+
+const animatePrev = () => {
+  if (cardIndex.value > 0) {
+    flashCardRef.value?.animateOut('right', prevCard)
+  }
+}
 
 const changeFilter = (filter) => {
   activeFilter.value = filter
@@ -90,6 +104,7 @@ defineExpose({
     />
 
     <FlashCard
+      ref="flashCardRef"
       :flipped="flipped"
       @click="toggleFlip"
       @swipe-left="nextCard"
@@ -128,8 +143,8 @@ defineExpose({
     </FlashCard>
 
     <CardNavigation
-      @prev="prevCard"
-      @next="nextCard"
+      @prev="animatePrev"
+      @next="animateNext"
     />
   </div>
 </template>
