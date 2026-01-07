@@ -13,46 +13,31 @@ export function useSpeech() {
       window.speechSynthesis.cancel()
     }
 
-    let fallbackTriggered = false
+    // Use Web Speech API with Thai voice preference
+    // This provides the most reliable cross-browser Thai pronunciation
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.lang = 'th-TH'
+      utterance.rate = 0.85
 
-    const speakWithWebSpeech = () => {
-      if (fallbackTriggered) return
-      fallbackTriggered = true
-
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text)
-        utterance.lang = 'th-TH'
-        utterance.rate = 0.8
-        utterance.onend = () => {
-          isPlaying.value = false
-        }
-        utterance.onerror = () => {
-          isPlaying.value = false
-        }
-        window.speechSynthesis.speak(utterance)
-      } else {
-        isPlaying.value = false
-      }
-    }
-
-    try {
-      const audio = new Audio(
-        `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=th&q=${encodeURIComponent(text)}`
+      // Try to find a Thai voice for more natural pronunciation
+      const voices = window.speechSynthesis.getVoices()
+      const thaiVoice = voices.find(
+        (voice) => voice.lang.startsWith('th') || voice.name.toLowerCase().includes('thai')
       )
+      if (thaiVoice) {
+        utterance.voice = thaiVoice
+      }
 
-      audio.onended = () => {
+      utterance.onend = () => {
         isPlaying.value = false
       }
-
-      audio.onerror = () => {
-        speakWithWebSpeech()
+      utterance.onerror = () => {
+        isPlaying.value = false
       }
-
-      audio.play().catch(() => {
-        speakWithWebSpeech()
-      })
-    } catch {
-      speakWithWebSpeech()
+      window.speechSynthesis.speak(utterance)
+    } else {
+      isPlaying.value = false
     }
   }
 
