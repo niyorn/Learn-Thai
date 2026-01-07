@@ -52,6 +52,13 @@ body {
   font-family: var(--font-thai);
 }
 
+/* Vowel placeholder - scale down the dotted circle */
+.vowel-placeholder {
+  font-size: 0.5em;
+  vertical-align: middle;
+  opacity: 0.4;
+}
+
 .font-display {
   font-family: var(--font-display);
 }

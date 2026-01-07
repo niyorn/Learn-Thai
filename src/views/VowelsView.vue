@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { vowelsData } from '@/data/vowels'
 import FlashCardView from '@/components/flashcard/FlashCardView.vue'
 import BaseBadge from '@/components/base/BaseBadge.vue'
@@ -7,6 +8,11 @@ const filterOptions = [
   { value: 'essential', label: 'Essential · 12' },
   { value: 'secondary', label: 'Secondary · 8' }
 ]
+
+// Format Thai text to style the dotted circle placeholder
+const formatVowel = (text) => {
+  return text.replace(/◌/g, '<span class="vowel-placeholder">◌</span>')
+}
 </script>
 
 <template>
@@ -19,6 +25,14 @@ const filterOptions = [
     sound-text-field="example"
     thai-text-size="text-[100px] max-sm:text-[80px]"
   >
+    <template #front="{ item, thaiTextSize }">
+      <span
+        class="font-thai font-semibold text-ink leading-none"
+        :class="thaiTextSize"
+        v-html="formatVowel(item.thai)"
+      />
+    </template>
+
     <template #back="{ item }">
       <div class="font-display text-4xl font-semibold mb-4">
         /{{ item.sound }}/

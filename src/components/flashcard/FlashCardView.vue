@@ -96,12 +96,18 @@ defineExpose({
       @swipe-right="prevCard"
     >
       <template #front>
-        <span
-          class="font-thai font-semibold text-ink leading-none"
-          :class="thaiTextSize"
+        <slot
+          name="front"
+          :item="current"
+          :thai-text-size="thaiTextSize"
         >
-          {{ current.thai }}
-        </span>
+          <span
+            class="font-thai font-semibold text-ink leading-none"
+            :class="thaiTextSize"
+          >
+            {{ current.thai }}
+          </span>
+        </slot>
         <div class="mt-5">
           <BaseSoundButton
             :text="current[soundTextField]"
